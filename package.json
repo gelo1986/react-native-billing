@@ -1,0 +1,27 @@
+{
+  "name": "react-native-billing",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/kurtsergey/react-native-billing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/kurtsergey/react-native-billing/issues"
+  },
+  "homepage": "https://gitlab.com/kurtsergey/react-native-billing#README",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "react-native-billing-verifier": "^0.2.0"
+  },
+  "peerDependencies": {
+    "react-native-billing": "^2.4.0",
+    "react-native-in-app-utils": "^6.0.0"
+  }
+}
