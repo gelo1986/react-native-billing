@@ -1,1 +1,1 @@
-# wm-react-native-billing
+# @wowmaking/react-native-billing

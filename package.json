@@ -1,21 +1,26 @@
 {
-  "name": "react-native-billing",
+  "name": "@wowmaking/react-native-billing",
   "version": "0.1.0",
-  "description": "",
+  "description": "Billing for ReactNative Apps",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "keywords": [
+    "react-native",
+    "billing"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/kurtsergey/react-native-billing.git"
+    "url": "https://github.com/wowmaking/react-native-billing.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "kurtsergey",
+    "email": "kurtsergey@gmail.com",
+    "url": "https://github.com/kurtsergey"
+  },
+  "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/kurtsergey/react-native-billing/issues"
+    "url": "https://github.com/wowmaking/react-native-billing/issues"
   },
-  "homepage": "https://gitlab.com/kurtsergey/react-native-billing#README",
+  "homepage": "https://github.com/wowmaking/react-native-billing#README",
   "dependencies": {
     "lodash": "^4.17.4",
     "react-native-billing-verifier": "^0.2.0"
