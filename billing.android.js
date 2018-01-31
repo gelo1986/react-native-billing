@@ -1,13 +1,13 @@
-import _find from 'lodash/find';
+import _assign from 'lodash/assign';
 import _map from 'lodash/map';
-
+import _keyBy from 'lodash/keyBy';
 
 import Billing from 'react-native-billing';
 import verify from 'react-native-billing-verifier/android';
 
 
-let products,
-    subscriptions,
+let products = {},
+    subscriptions = {},
     googleplay_public_key = '';
 
 
@@ -17,11 +17,11 @@ export default {
         googleplay_public_key = key;
 
         return Billing.close()
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
                 return Billing.open();
             })
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
                 return Billing.getProductDetailsArray(prods);
             })
@@ -32,7 +32,7 @@ export default {
             .then((res) => {
                 console.log('products');
                 console.log(JSON.stringify(res, null, '\t'));
-                products = res;
+                products = _keyBy(res, 'productId');
                 return Billing.getSubscriptionDetailsArray(subs);
             })
             .catch((err) => {
@@ -42,12 +42,12 @@ export default {
             .then((res) => {
                 console.log('subscriptions');
                 console.log(JSON.stringify(res, null, '\t'));
-                subscriptions = res;
+                subscriptions = _keyBy(res, 'productId');
             });
     },
 
     getProductDetails(productId) {
-        var p = _find(products, { productId, }) || _find(subscriptions, { productId, });
+        var p = products[productId] || subscriptions[productId];
         return p ? {
             ...p,
             title: p.title.replace(/\(.*\)$/, ''), // remove app name
@@ -56,12 +56,19 @@ export default {
 
     purchase(productId) {
         return Billing.close()
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
                 return Billing.open();
             })
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
+                return Billing.getProductDetailsArray([productId]);
+            })
+            .catch(() => {
+                return [];
+            })
+            .then((res) => {
+                products = _assign(products, _keyBy(res, 'productId'));
                 return Billing.purchase(productId);
             })
             .then((res) => {
@@ -75,12 +82,19 @@ export default {
 
     subscribe(productId) {
         return Billing.close()
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
                 return Billing.open();
             })
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
+                return Billing.getSubscriptionDetailsArray([productId]);
+            })
+            .catch(() => {
+                return [];
+            })
+            .then((res) => {
+                subscriptions = _assign(subscriptions, _keyBy(res, 'productId'));
                 return Billing.subscribe(productId);
             })
             .then((res) => {
@@ -88,13 +102,13 @@ export default {
             });
     },
 
-    restorePurchases(presented) {
+    restorePurchases() {
         return Billing.close()
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
                 return Billing.open();
             })
-            .catch((err) => { })
+            .catch(() => { })
             .then(() => {
                 return Billing.loadOwnedPurchasesFromGoogle();
             })

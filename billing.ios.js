@@ -1,11 +1,12 @@
-import _find from 'lodash/find';
+import _assign from 'lodash/assign';
 import _map from 'lodash/map';
+import _keyBy from 'lodash/keyBy';
 
 import Billing from 'react-native-in-app-utils';
 import verify from 'react-native-billing-verifier/ios';
 
 
-let products,
+let products = {},
     connect_key;
 
 
@@ -22,14 +23,15 @@ export default {
             .then((res) => {
                 console.log('products');
                 console.log(JSON.stringify(res, null, '\t'));
-                products = res;
+                products = _keyBy(res, 'identifier');
             });
     },
 
     getProductDetails(productId) {
-        var p = _find(products, { identifier: productId, });
+        var p = products[productId];
         return p ? {
             ...p,
+            productId: p.identifier,
             priceText: p.priceString,
             priceValue: p.price,
             currency: p.currencyCode,
@@ -39,6 +41,7 @@ export default {
     purchase(productId) {
         return Billing.loadProducts([productId])
             .then((res) => {
+                products = _assign(products, _keyBy(res, 'identifier'));
                 return Billing.purchaseProduct(productId);
             })
             .then((response) => ({
@@ -55,7 +58,7 @@ export default {
         return this.purchase(productId);
     },
 
-    restorePurchases(presented) {
+    restorePurchases() {
         return Billing.restorePurchases()
             .then((arr) => {
                 return _map(arr, details => ({

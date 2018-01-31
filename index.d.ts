@@ -1,4 +1,4 @@
-declare module "react-native-billing" {
+declare module "@wowmaking/react-native-billing" {
 
     interface Billing {
 
