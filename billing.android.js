@@ -127,4 +127,8 @@ export default {
         return verify(details, googleplay_public_key);
     },
 
+    verifyPurchases() {
+        return this.restorePurchases();
+    },
+
 };

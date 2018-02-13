@@ -1,5 +1,6 @@
 import _assign from 'lodash/assign';
 import _map from 'lodash/map';
+import _filter from 'lodash/filter';
 import _keyBy from 'lodash/keyBy';
 
 import Billing from 'react-native-in-app-utils';
@@ -71,6 +72,13 @@ export default {
 
     verify(details) {
         return verify(details, connect_key);
+    },
+
+    verifyPurchases(purchases) {
+        return Promise.all(
+            _map(purchases, p => this.verify(p).catch(() => null))
+        )
+            .then(purchases => _filter(purchases, p => !!p));
     },
 
 };

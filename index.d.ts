@@ -12,6 +12,8 @@ declare module "@wowmaking/react-native-billing" {
 
         restorePurchases(presented): Promise<[{}]>,
 
+        verifyPurchases(purchases): Promise<[{}]>,
+
     }
 
     export default Billing;

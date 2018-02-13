@@ -30,4 +30,8 @@ export default {
             });
     },
 
+    verifyPurchases(purchases) {
+        return Billing.verifyPurchases(purchases);
+    },
+
 };
