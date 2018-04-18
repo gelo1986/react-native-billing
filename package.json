@@ -23,7 +23,7 @@
   "homepage": "https://github.com/wowmaking/react-native-billing#README",
   "dependencies": {
     "lodash": "^4.17.4",
-    "react-native-billing-verifier": "^0.2.0"
+    "react-native-billing-verifier": "^0.2.1"
   },
   "peerDependencies": {
     "react-native-billing": "^2.4.0",
