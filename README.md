@@ -30,10 +30,8 @@ Billing.init(['com.wowapp.no_ads'], ['com.wowapp.full.weekly'], 'wowappkey')
 #### Returns [Product details](#product-details)
 
 ```javascript
-Billing.getProductDetails('com.wowapp.full.weekly')
-    .then(details => {
-        console.log(details);
-    });
+var details = Billing.getProductDetails('com.wowapp.full.weekly');
+console.log(details);
 ```
 
 ### purchase(productId)
