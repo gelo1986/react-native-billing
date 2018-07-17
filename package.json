@@ -1,6 +1,6 @@
 {
   "name": "@wowmaking/react-native-billing",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Billing for ReactNative Apps",
   "main": "index.js",
   "keywords": [
