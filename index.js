@@ -23,11 +23,8 @@ export default {
         return Billing.subscribe(productId);
     },
 
-    restorePurchases(presented) {
-        return Billing.restorePurchases()
-            .then(arr => {
-                return _filter(arr, productId => !_find(presented, { productId }));
-            });
+    restorePurchases() {
+        return Billing.restorePurchases();
     },
 
     verifyPurchases(purchases) {

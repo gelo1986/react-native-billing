@@ -64,18 +64,14 @@ Billing.purchase('com.wowapp.full.weekly')
     });
 ```
 
-### restorePurchases(presented)
-
-#### Parameter(s)
-
-* **presented:** Array of [Transaction details](#transaction-details) - known transactions
+### restorePurchases()
 
 #### Returns Promise of Array of [Transaction details](#transaction-details):
  
 ```javascript
-Billing.restorePurchases(known)
-    .then(unknown => {
-        console.log(unknown);
+Billing.restorePurchases()
+    .then(transactions => {
+        console.log(transactions);
     });
 ```
 

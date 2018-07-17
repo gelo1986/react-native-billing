@@ -10,7 +10,7 @@ declare module "@wowmaking/react-native-billing" {
 
         subscribe(productId: string): Promise<{}>,
 
-        restorePurchases(presented): Promise<[{}]>,
+        restorePurchases(): Promise<[{}]>,
 
         verifyPurchases(purchases): Promise<[{}]>,
 
