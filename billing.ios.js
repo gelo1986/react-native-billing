@@ -28,6 +28,11 @@ export default {
             });
     },
 
+    isAvailable() {
+        return Billing.canMakePayments()
+            .catch(() => false);
+    },
+
     getProductDetails(productId) {
         var p = products[productId];
         return p ? {

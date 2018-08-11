@@ -21,6 +21,17 @@ Billing.init(['com.wowapp.no_ads'], ['com.wowapp.full.weekly'], 'wowappkey')
     });
 ```
 
+### isAvailable()
+
+#### Returns Promise
+
+```javascript
+Billing.isAvailable()
+    .then((isAvailable) => {
+        console.log('isAvailable: ', isAvailable);
+    });
+```
+
 ### getProductDetails(productId)
 
 #### Parameter(s)

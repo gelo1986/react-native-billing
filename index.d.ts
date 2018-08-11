@@ -3,6 +3,8 @@ declare module "@wowmaking/react-native-billing" {
     interface Billing {
 
         init(products: [string], subscriptions: [string], key: string): Promise<void>,
+        
+        isAvailable(): Promise<boolean>,
 
         getProductDetails(productId: string): {},
 

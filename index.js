@@ -11,6 +11,10 @@ export default {
         return Billing.init(products, subscriptions, key);
     },
 
+    isAvailable() {
+        return Billing.isAvailable();
+    },
+
     getProductDetails(productId) {
         return Billing.getProductDetails(productId);
     },

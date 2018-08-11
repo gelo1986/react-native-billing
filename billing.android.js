@@ -46,6 +46,19 @@ export default {
             });
     },
 
+    isAvailable() {
+        return Billing.close()
+            .catch(() => { })
+            .then(() => {
+                return Billing.open();
+            })
+            .catch(() => { })
+            .then(() => {
+                return Billing.isOneTimePurchaseSupported();
+            })
+            .catch(() => false);
+    },
+
     getProductDetails(productId) {
         var p = products[productId] || subscriptions[productId];
         return p ? {
