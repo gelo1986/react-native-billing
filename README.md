@@ -2,6 +2,20 @@
 
 [![npm](https://img.shields.io/npm/v/@wowmaking/react-native-billing.svg)](https://npmjs.com/package/@wowmaking/react-native-billing)
 
+
+## [Usage Example](https://gist.github.com/kurtsergey/ccb51f437787f13448d3c9651e9fabbd)
+
+## Installation
+
+### Install and link
+* [react-native-billing](https://npmjs.com/package/react-native-billing) for Android
+* [react-native-in-app-utils](https://npmjs.com/package/react-native-in-app-utils) for iOS 
+
+### **Use iOS lib from git branch**:
+
+`npm i react-native-in-app-utils@github:superandrew213/react-native-in-app-utils#listen-for-purchase-event`
+
+
 ## API
 
 ### init(products, subscriptions, key)
