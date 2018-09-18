@@ -13,7 +13,7 @@
 
 ### **Use iOS lib from git branch**:
 
-`npm i react-native-in-app-utils@github:superandrew213/react-native-in-app-utils#listen-for-purchase-event`
+`npm i react-native-in-app-utils@github:wowmaking/react-native-in-app-utils`
 
 
 ## API
@@ -30,8 +30,9 @@
 
 ```javascript
 Billing.init(['com.wowapp.no_ads'], ['com.wowapp.full.weekly'], 'wowappkey')
-    .then(() => {
-        console.log('initialized');
+    .then(({ products, subscriptions, }) => {
+        console.log('products: ', products);
+        console.log('subscriptions: ', subscriptions);
     });
 ```
 
@@ -122,8 +123,9 @@ Billing.verifyPurchases(all)
   * **title:** String
   * **description:** String
   * **currency:** String
-  * **priceValue:** Double
+  * **priceValue:** Number
   * **priceText:** String
+  * **countryCode:** String (iOS)
 
 ### Transaction details:
   * **productId:** String

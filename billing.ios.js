@@ -7,7 +7,9 @@ import Billing from 'react-native-in-app-utils';
 import verify from 'react-native-billing-verifier/ios';
 
 
-let products = {},
+let products = [],
+    subscriptions = [],
+    index = {},
     connect_key;
 
 
@@ -16,16 +18,26 @@ export default {
     init(prods, subs, key) {
         connect_key = key;
 
-        return Billing.loadProducts([...prods, ...subs])
+        return Billing.loadProducts(prods)
             .catch((err) => {
-                console.log('billing error: ' + (err ? err.message : ''));
                 return [];
             })
             .then((res) => {
-                console.log('products');
-                console.log(JSON.stringify(res, null, '\t'));
-                products = _keyBy(res, 'identifier');
-            });
+                products = _map(res, mapProduct);
+                index = _assign(index, _keyBy(products, 'productId'));
+                return Billing.loadProducts(subs);
+            })
+            .catch((err) => {
+                return [];
+            })
+            .then((res) => {
+                subscriptions = _map(res, mapProduct);
+                index = _assign(index, _keyBy(subscriptions, 'productId'));
+            })
+            .then(() => ({
+                products,
+                subscriptions,
+            }));
     },
 
     isAvailable() {
@@ -34,27 +46,16 @@ export default {
     },
 
     getProductDetails(productId) {
-        var p = products[productId];
-        return p ? {
-            ...p,
-            productId: p.identifier,
-            priceText: p.priceString,
-            priceValue: p.price,
-            currency: p.currencyCode,
-        } : null;
+        return index[productId] || null;
     },
 
     purchase(productId) {
         return Billing.loadProducts([productId])
             .then((res) => {
-                products = _assign(products, _keyBy(res, 'identifier'));
+                index = _assign(index, _keyBy(_map(res, mapProduct), 'productId'));
                 return Billing.purchaseProduct(productId);
             })
-            .then((response) => ({
-                ...response,
-                productId: response.productIdentifier,
-                orderId: response.transactionIdentifier,
-            }))
+            .then(mapTransaction)
             .then((res) => {
                 return this.verify(res);
             });
@@ -66,13 +67,7 @@ export default {
 
     restorePurchases() {
         return Billing.restorePurchases()
-            .then((arr) => {
-                return _map(arr, details => ({
-                    ...details,
-                    productId: details.productIdentifier,
-                    orderId: details.transactionIdentifier,
-                }));
-            });
+            .then((arr) => _map(arr, mapTransaction));
     },
 
     verify(details) {
@@ -86,4 +81,24 @@ export default {
             .then(purchases => _filter(purchases, p => !!p));
     },
 
+};
+
+function mapProduct(product) {
+    return {
+        productId: product.identifier,
+        title: product.title,
+        description: product.description,
+        currency: product.currencyCode,
+        priceValue: product.price,
+        priceText: product.priceString,
+        countryCode: product.countryCode,
+    };
+};
+
+function mapTransaction(transaction) {
+    return {
+        ...transaction,
+        productId: transaction.productIdentifier,
+        orderId: transaction.transactionIdentifier,
+    };
 };

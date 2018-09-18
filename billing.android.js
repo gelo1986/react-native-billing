@@ -6,8 +6,9 @@ import Billing from 'react-native-billing';
 import verify from 'react-native-billing-verifier/android';
 
 
-let products = {},
-    subscriptions = {},
+let products = [],
+    subscriptions = [],
+    index = {},
     googleplay_public_key = '';
 
 
@@ -26,24 +27,24 @@ export default {
                 return Billing.getProductDetailsArray(prods);
             })
             .catch((err) => {
-                console.log('billing: ' + err);
                 return [];
             })
             .then((res) => {
-                console.log('products');
-                console.log(JSON.stringify(res, null, '\t'));
-                products = _keyBy(res, 'productId');
+                products = _map(res, mapProduct);
+                index = _assign(index, _keyBy(products, 'productId'));
                 return Billing.getSubscriptionDetailsArray(subs);
             })
             .catch((err) => {
-                console.log('billing: ' + err);
                 return [];
             })
             .then((res) => {
-                console.log('subscriptions');
-                console.log(JSON.stringify(res, null, '\t'));
-                subscriptions = _keyBy(res, 'productId');
-            });
+                subscriptions = _map(res, mapProduct);
+                index = _assign(index, _keyBy(subscriptions, 'productId'));
+            })
+            .then(() => ({
+                products,
+                subscriptions,
+            }));
     },
 
     isAvailable() {
@@ -60,11 +61,7 @@ export default {
     },
 
     getProductDetails(productId) {
-        var p = products[productId] || subscriptions[productId];
-        return p ? {
-            ...p,
-            title: p.title.replace(/\(.*\)$/, ''), // remove app name
-        } : null;
+        return index[productId] || null;
     },
 
     purchase(productId) {
@@ -81,7 +78,7 @@ export default {
                 return [];
             })
             .then((res) => {
-                products = _assign(products, _keyBy(res, 'productId'));
+                index = _assign(index, _keyBy(_map(res, mapProduct), 'productId'));
                 return Billing.purchase(productId);
             })
             .then((res) => {
@@ -107,7 +104,7 @@ export default {
                 return [];
             })
             .then((res) => {
-                subscriptions = _assign(subscriptions, _keyBy(res, 'productId'));
+                index = _assign(index, _keyBy(_map(res, mapProduct), 'productId'));
                 return Billing.subscribe(productId);
             })
             .then((res) => {
@@ -144,4 +141,15 @@ export default {
         return this.restorePurchases();
     },
 
+};
+
+function mapProduct(product) {
+    return {
+        productId: product.productId,
+        title: product.title,
+        description: product.description,
+        currency: product.currency,
+        priceValue: product.priceValue,
+        priceText: product.priceText,
+    };
 };
